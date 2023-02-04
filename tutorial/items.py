@@ -12,9 +12,9 @@ class TutorialItem(scrapy.Item):
 
 class UniversityItem(scrapy.Item):
     # define the fields for your item here like:
-    code = scrapy.Field()
-    name = scrapy.Field()
-    utype = scrapy.Field()
+    univCode = scrapy.Field()
+    univName = scrapy.Field()
+    univType = scrapy.Field()
 
 
 class ProgramLinkItem(scrapy.Item):

@@ -19,9 +19,9 @@ class UniversityLinksSpider(scrapy.Spider):
             for option in group.xpath("option"):
 
                 loader = ItemLoader(item=UniversityItem(), selector=option)
-                loader.add_xpath("code", "@value")
-                loader.add_xpath("name", "text()")
-                loader.add_value("utype", uniType)
+                loader.add_xpath("univCode", "@value")
+                loader.add_xpath("univName", "text()")
+                loader.add_value("univType", uniType)
                 yield loader.load_item()
 
 
@@ -31,8 +31,8 @@ class ProgramLinksSpider(scrapy.Spider):
     name = "program_links"
 
     uniCodes = []
-    with open('university_codes.json', 'r') as file:
-        uniCodes = json.load(file)
+    #with open('university_codes.json', 'r') as file:
+    #    uniCodes = json.load(file)
 
     start_urls = ["https://yokatlas.yok.gov.tr/lisans-univ.php?u="+uni["code"] for uni in uniCodes]
  
