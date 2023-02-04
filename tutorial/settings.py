@@ -87,7 +87,7 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-ROTATING_PROXY_LIST_PATH = None
+ROTATING_PROXY_LIST_PATH = "proxy/proxy_list.txt"
 
 ## Enable The Proxy Middleware In Your Downloader Middlewares
 DOWNLOADER_MIDDLEWARES = {

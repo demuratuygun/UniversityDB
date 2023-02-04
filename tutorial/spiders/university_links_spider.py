@@ -3,10 +3,11 @@ import json
 
 from scrapy.loader import ItemLoader
 from tutorial.items import UniversityItem
+from tutorial.items import ProgramItem
 
-#scrapy crawl university_codes -o university_codes.json
-class UniversityLinksSpider(scrapy.Spider):
-    name = "university_codes"
+#scrapy crawl universities -o universities.json
+class UniversitySpider(scrapy.Spider):
+    name = "universities"
     start_urls = ["https://yokatlas.yok.gov.tr/lisans-anasayfa.php"]
 
     def parse(self, response):
@@ -26,27 +27,45 @@ class UniversityLinksSpider(scrapy.Spider):
 
 
 
-#scrapy crawl program_links -o program_links.json
-class ProgramLinksSpider(scrapy.Spider):
-    name = "program_links"
+#scrapy crawl programs -o program_links.json
+class ProgramSpider(scrapy.Spider):
+    name = "programs"
 
-    uniCodes = []
-    #with open('university_codes.json', 'r') as file:
-    #    uniCodes = json.load(file)
+    universities = []
+    with open('universities.json', 'r') as file:
+        universities = json.load(file)
 
-    start_urls = ["https://yokatlas.yok.gov.tr/lisans-univ.php?u="+uni["code"] for uni in uniCodes]
+    start_urls = ["https://yokatlas.yok.gov.tr/lisans-univ.php?u="+uni["univCode"] for uni in universities]
  
     def parse(self, response):
 
         for button in response.xpath("//a[contains(@href, 'lisans.php?y=')]"):
-            yield {
-                "university": response.xpath("//h3/text()").get(),
-                "program": button[0].xpath("div/text()").get().strip(),
-                "score type": button.xpath("button/text()").get(),
-                "faculty": button.xpath("small/font/text()").get().strip("()"),
-                "link": button.attrib["href"]
-            }
 
+            loader = ItemLoader(item=ProgramItem(), selector=button)
+            loader.add_xpath("university", "//h3/text()")
+            loader.add_xpath("program", "div/text()")
+            loader.add_xpath("type", "button/text()")
+            loader.add_xpath("faculty", "small/font/text()")
+            loader.add_xpath("code", "@href")
+            yield loader.load_item()
+
+            # yield {
+            #     "university": response.xpath("//h3/text()").get(),
+            #     "program": button[0].xpath("div/text()").get().strip(),
+            #     "type": button.xpath("button/text()").get(),
+            #     "faculty": button.xpath("small/font/text()").get().strip("()"),
+            #     "code": button.attrib["href"].split("y=")[1]
+            # }
+
+
+# https://yokatlas.yok.gov.tr/content/lisans-dynamic/1000_1.php?y=409610488
+class TablesSpider(scrapy.Spider):
+    name = "tables"
+
+    linksDict = {}
+    with open('links.json', 'r') as file:
+        linksDict = json.load(file)
+    
 
 
 class IpTest(scrapy.Spider):
