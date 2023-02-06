@@ -4,28 +4,24 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
-from scrapy.loader.processors import MapCompose, TakeFirst
-
-class TutorialItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+#from scrapy.loader.processors import 
+from itemloaders.processors import MapCompose, TakeFirst
 
 class UniversityItem(scrapy.Item):
 
-    univCode = scrapy.Field()
-    univName = scrapy.Field()
-    univType = scrapy.Field()
+    univCode = scrapy.Field(output_processor=TakeFirst())
+    univName = scrapy.Field(output_processor=TakeFirst())
+    univType = scrapy.Field(output_processor=TakeFirst())
 
 
 class ProgramItem(scrapy.Item):
-    
-    university= scrapy.Field()
+
+    university= scrapy.Field(output_processor=TakeFirst())
     program = scrapy.Field(
         input_processor=MapCompose(str.strip),
         output_processor=TakeFirst()
     )
-    type = scrapy.Field()
+    type = scrapy.Field(output_processor=TakeFirst())
     faculty = scrapy.Field(
         input_processor=MapCompose(lambda s: s.strip("()")),
         output_processor=TakeFirst()
