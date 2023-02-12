@@ -31,3 +31,12 @@ class ProgramItem(scrapy.Item):
         output_processor=TakeFirst()
     )
 
+
+class GeneralInfoItem(scrapy.Item):
+
+    col1 = scrapy.Field()
+    col2 = scrapy.Field(
+        input_processor=MapCompose(int),
+        output_processor=TakeFirst()
+    )
+    
