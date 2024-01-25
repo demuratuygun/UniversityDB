@@ -1,1 +1,1 @@
-Extracting Yok Atlas Dataset with the help of scrapy python framework and Apahce Airflow
+Extracting Yok Atlas Dataset using scrapy python framework

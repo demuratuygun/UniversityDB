@@ -3,7 +3,7 @@ import json
 import os
 
 from scrapy.loader import ItemLoader
-from tutorial.items import ProgramItem
+from Universities.items import ProgramItem
 
 #scrapy crawl programs -o programs.json
 class ProgramSpider(scrapy.Spider):
@@ -13,6 +13,7 @@ class ProgramSpider(scrapy.Spider):
         os.remove("programs.json")
         self.start_urls = ["https://yokatlas.yok.gov.tr/lisans-univ.php?u="+code for code in uni_codes[0:2]]
  
+    
     def parse(self, response):
 
         for button in response.xpath("//a[contains(@href, 'lisans.php?y=')]"):
@@ -23,4 +24,6 @@ class ProgramSpider(scrapy.Spider):
             loader.add_xpath("type", "button/text()")
             loader.add_xpath("faculty", "small/font/text()")
             loader.add_xpath("code", "@href")
+
             yield loader.load_item()
+

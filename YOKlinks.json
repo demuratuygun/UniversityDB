@@ -25,7 +25,7 @@
         "preference_tendency_same_programs": "1340a.php?y=",
         "preference_tendency_programs": "1340b.php?y=",
         "conditions": "1110.php?y="
-    },
+        },
     "associate_Degree": {
         "main_info" : "3000_1.php?y=",
         "quota_placement_statistics" : "3000_2.php?y=",
@@ -49,5 +49,5 @@
         "preference_tendency_same_programs": "3340ab.php?y=",
         "preference_tendency_programs": "3340bb.php?y=",
         "conditions": "3110.php?y="
-    }
+        }
 }

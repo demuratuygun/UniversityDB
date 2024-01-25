@@ -1,7 +1,8 @@
 import pickle
 import json
 import requests
-
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 
 def unicodesTest():
 
@@ -21,4 +22,3 @@ def readProgLinks():
         l = pickle.load(file)
         print(len(l))
 
-unicodesTest()

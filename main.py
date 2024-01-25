@@ -1,9 +1,14 @@
 from scrapy.crawler import CrawlerProcess
-from tutorial.spiders.Universities import UniversitySpider
-from tutorial.spiders.Programs import ProgramSpider
-#/home/maverick/anaconda3/bin/python /home/maverick/data-science/universities/tutorial/main.py
+from scrapy import signals
+
+from Universities.spiders.Universities import UniversitySpider
+from Universities.spiders.Programs import ProgramSpider
+
 import threading
 import json
+
+
+
 
 #scrapy crawl universities -o universities.json
 def universitiesSpider():
@@ -15,7 +20,9 @@ def universitiesSpider():
     })
 
     process.crawl(UniversitySpider)
+    process.signals.connect(programsSpider, signal=signals.spider_closed)
     process.start()
+
 
 
 #scrapy crawl programs -o programs.json

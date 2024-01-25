@@ -1,9 +1,11 @@
+
 import scrapy
-import json
-import os
 
 from scrapy.loader import ItemLoader
-from tutorial.items import UniversityItem
+from Universities.items import UniversityItem
+from sqlalchemy.orm import sessionmaker
+from models import *
+from items import *
 
 #scrapy crawl universities -o universities.json
 class UniversitySpider(scrapy.Spider):
@@ -11,12 +13,10 @@ class UniversitySpider(scrapy.Spider):
     name = "universities"
     start_urls = ["https://yokatlas.yok.gov.tr/lisans-anasayfa.php"]
 
-    def __init__(self):
-        os.remove("universities.json")
-
     def parse(self, response):
 
         groups = response.xpath("//select[@id='univ']/optgroup")
+        #https://yokatlas.yok.gov.tr/content/lisans-dynamic/1000_1.php?y=106510077
 
         for group in groups:
 
@@ -24,10 +24,26 @@ class UniversitySpider(scrapy.Spider):
             for option in group.xpath("option"):
 
                 loader = ItemLoader(item=UniversityItem(), selector=option)
-                loader.add_xpath("univCode", "@value")
-                loader.add_xpath("univName", "text()")
-                loader.add_value("univType", uniType)
+                loader.add_xpath("code", "@value")
+                loader.add_xpath("name", "text()")
+                loader.add_value("type", uniType)
+
                 yield loader.load_item()
+
+        
+
+        engine = db_connect()
+        Session = sessionmaker(bind=engine)
+        session = Session()
+        
+        unis = session.query(University).all()
+        ["https://yokatlas.yok.gov.tr/lisans-univ.php?u="+uni.code for uni in unis]
+
+                
+
+        
+
+        
 
 
 
